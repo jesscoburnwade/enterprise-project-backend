@@ -1,11 +1,11 @@
 package com.qa.indivbankingproject.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,23 +18,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qa.indivbankingproject.models.Accounts;
 import com.qa.indivbankingproject.repository.AccountsRepository;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api/v1/accounts")
+@RequestMapping("/accountapp/rest/json")
 public class AccountsController {
 	
 	@Autowired
 	AccountsRepository accountsRepository;
 	
-	@GetMapping
-	public List<Accounts> list() {
-		List<Accounts> accounts = new ArrayList<>();
-		return accounts;
+//	@GetMapping
+//	public List<Accounts> list() {
+//		List<Accounts> accounts = new ArrayList<>();
+//		return accounts;
+//	}
+	
+	@PostMapping
+	public Accounts create(@RequestBody Accounts account) {
+		return accountsRepository.save(account);
 	}
 	
-	@PostMapping(consumes = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public void create(@RequestBody Accounts account) {
-		accountsRepository.save(account);
+	@GetMapping
+	public List<Accounts> getAll() {
+		return accountsRepository.findAll();
 	}
 
 	@GetMapping("/{id}")
